@@ -130,7 +130,7 @@ const ChatPage = () => {
     // call backend model
     (async () => {
       // Prefer explicit apiConfig (your ngrok Flask URL). Fallbacks kept for dev.
-      const API_BASE = API_BASE_URL || process.env.REACT_APP_API_URL || "http://localhost:5000";
+      const API_BASE = API_BASE_URL || process.env.REACT_APP_API_URL || "https://cura-ai-backend-8o5f.onrender.com";
       const token = localStorage.getItem("token");
       try {
         const resp = await fetch(`${API_BASE}/ask`, {

@@ -67,7 +67,7 @@ const SignupPage = () => {
 
     try {
       // Use explicit backend base URL. Set REACT_APP_API_URL in .env (e.g. http://localhost:5000)
-      const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const API_BASE = process.env.REACT_APP_API_URL || 'https://cura-ai-backend-8o5f.onrender.com';
 
       const res = await fetch(`${API_BASE}/api/auth/signup`, {
         method: 'POST',
@@ -101,7 +101,7 @@ const SignupPage = () => {
 
   const handleOAuth = (provider) => {
     if (provider === 'google') {
-      const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const API_BASE = process.env.REACT_APP_API_URL || 'https://cura-ai-backend-8o5f.onrender.com';
       window.location.href = `${API_BASE}/api/auth/google/url`;
     } else {
       alert(`${provider} OAuth not implemented`);

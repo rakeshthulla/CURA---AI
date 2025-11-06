@@ -69,7 +69,7 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const API_BASE = process.env.REACT_APP_API_URL || 'https://cura-ai-backend-8o5f.onrender.com';
 
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
@@ -113,7 +113,7 @@ const LoginPage = () => {
 
   const handleOAuth = (provider) => {
     if (provider === 'google') {
-      const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const API_BASE = process.env.REACT_APP_API_URL || 'https://cura-ai-backend-8o5f.onrender.com';
       // backend will redirect to Google's consent page
       window.location.href = `${API_BASE}/api/auth/google/url`;
     } else {
