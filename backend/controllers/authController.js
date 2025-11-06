@@ -214,9 +214,14 @@ export const forgotPassword = async (req, res) => {
       html: `<p>You requested a password reset. Click the link to reset your password (valid for 1 hour):</p><p><a href="${resetUrl}">${resetUrl}</a></p>`
     };
 
-    await transporter.sendMail(mailOptions).catch(err => {
-      console.error("Failed sending reset email:", err);
-    });
+    // ✅ Send email and log result properly
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log("✅ Password reset email sent:", info.response);
+    } catch (emailErr) {
+      console.error("❌ Failed to send reset email:", emailErr);
+      // Still return success to avoid revealing if email exists, but log the error
+    }
 
     return res.status(200).json({ message: "If that email exists, a reset link has been sent." });
   } catch (err) {
