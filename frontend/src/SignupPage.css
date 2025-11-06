@@ -1,0 +1,165 @@
+/* === AUTH MODAL WRAPPER === */
+.auth-modal {
+  background-color: #121212;
+  color: #ffffff;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+  padding: 20px;
+}
+
+/* === MODAL CONTAINER === */
+.auth-modal-content {
+  background-color: #1e1e1e;
+  padding: 40px 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+/* === HEADINGS === */
+.auth-modal-content h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.auth-modal-content p {
+  font-size: 14px;
+  color: #b5b5b5;
+  margin-bottom: 25px;
+}
+
+/* === OAUTH BUTTONS === */
+.oauth-button {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid #3a3a3a;
+  border-radius: 25px;
+  padding: 11px 15px;
+  color: #e0e0e0;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.oauth-button:hover {
+  background-color: #2a2a2a;
+  border-color: #555;
+}
+
+/* === DIVIDER LINE === */
+.divider {
+  display: flex;
+  align-items: center;
+  color: #888;
+  font-size: 12px;
+  margin: 25px 0;
+}
+
+.divider hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #333;
+  margin: 0 10px;
+}
+
+/* === TEXT INPUTS === */
+.text-input {
+  width: 90%;
+  padding: 12px 18px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  margin-bottom: 12px;
+  background-color: #2a2a2a;
+  color: #fff;
+  transition: border 0.2s ease, background 0.2s ease;
+}
+
+.text-input:focus {
+  background-color: #333;
+  border: 1px solid #555;
+}
+
+/* === PASSWORD INPUT BOX === */
+.password-box {
+  display: flex;
+  align-items: center;
+  background-color: #2a2a2a;
+  border-radius: 25px;
+  padding: -3px 15px;
+  margin-bottom: 12px;
+}
+
+
+.password-box input {
+  flex: 1;
+  padding: 8px 30px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  color: #fff;
+}
+
+.password-box .eye {
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.password-box .eye:hover {
+  color: #fff;
+}
+
+/* === CREATE ACCOUNT BUTTON === */
+.continue-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  background-color: #fff;
+  color: #000;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  margin-top: 10px;
+}
+
+.continue-btn:hover {
+  background-color: #e5e5e5;
+  transform: scale(1.02);
+}
+
+/* === FOOTER LINKS === */
+.footer-links {
+  margin-top: 25px;
+  color: #aaa;
+  font-size: 12px;
+}
+
+.footer-links a {
+  color: #aaa;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}

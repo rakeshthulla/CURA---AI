@@ -1,0 +1,487 @@
+/* ========== Base Styles ========== */
+.overview-container {
+  background-color: #0d0d0f;
+  color: #ffffff;
+  min-height: 100vh;
+  padding: 0;
+  font-family: "Inter", "Poppins", sans-serif;
+}
+
+/* ========== Hero Section ========== */
+.overview-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 80px 100px;
+  background: linear-gradient(135deg, #0d0d0f 0%, #1a1a1f 100%);
+  border-bottom: 1px solid #2a2a2e;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.overview-hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-description {
+  color: #b3b3b3;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cta-primary {
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.mode-btn {
+  background: #1a1a1f;
+  color: #b3b3b3;
+  border: 1px solid #2a2a2e;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode-btn.doctor:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.mode-btn.patient:hover {
+  border-color: #9333ea;
+  color: #9333ea;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai-interface-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 300px;
+}
+
+.chat-bubble {
+  padding: 15px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.chat-bubble.doctor {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  align-self: flex-start;
+  border-bottom-left-radius: 5px;
+}
+
+.chat-bubble.patient {
+  background: #2a2a2e;
+  color: #b3b3b3;
+  align-self: flex-end;
+  border-bottom-right-radius: 5px;
+}
+
+/* ========== Problem Section ========== */
+.problem-section {
+  padding: 80px 100px;
+  background: #0d0d0f;
+}
+
+.problem-section h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 50px;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.problem-card {
+  background: #16161a;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid #2a2a2e;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.problem-card:hover {
+  transform: translateY(-5px);
+  border-color: #3b82f6;
+}
+
+.problem-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.problem-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.problem-card p {
+  color: #b3b3b3;
+  line-height: 1.6;
+}
+
+/* ========== Features Section ========== */
+.features-section {
+  padding: 80px 100px;
+  background: #111113;
+}
+
+.features-section h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 50px;
+  color: #ffffff;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.feature-card {
+  background: #16161a;
+  padding: 30px 25px;
+  border-radius: 15px;
+  border: 1px solid #2a2a2e;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border-color: #3b82f6;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.feature-card p {
+  color: #b3b3b3;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* ========== Technical Specs ========== */
+.tech-specs-section {
+  padding: 80px 100px;
+  background: #0d0d0f;
+}
+
+.tech-specs-section h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 50px;
+  color: #ffffff;
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.spec-card {
+  background: #16161a;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #2a2a2e;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spec-label {
+  font-size: 0.9rem;
+  color: #b3b3b3;
+  font-weight: 500;
+}
+
+.spec-value {
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ========== Workflow Section ========== */
+.workflow-section {
+  padding: 80px 100px;
+  background: #111113;
+}
+
+.workflow-section h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 50px;
+  color: #ffffff;
+}
+
+.workflow-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.workflow-card {
+  background: #16161a;
+  padding: 35px 30px;
+  border-radius: 15px;
+  border: 1px solid #2a2a2e;
+  transition: all 0.3s ease;
+}
+
+.workflow-card:hover {
+  transform: translateY(-5px);
+}
+
+.workflow-card.doctor-workflow:hover {
+  border-color: #3b82f6;
+}
+
+.workflow-card.patient-workflow:hover {
+  border-color: #9333ea;
+}
+
+.workflow-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.workflow-icon {
+  font-size: 2rem;
+}
+
+.workflow-header h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.workflow-features {
+  list-style: none;
+  padding: 0;
+}
+
+.workflow-features li {
+  color: #b3b3b3;
+  padding: 8px 0;
+  border-bottom: 1px solid #2a2a2e;
+  position: relative;
+  padding-left: 20px;
+}
+
+.workflow-features li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.workflow-card.patient-workflow .workflow-features li:before {
+  color: #9333ea;
+}
+
+.workflow-features li:last-child {
+  border-bottom: none;
+}
+
+/* ========== CTA Section ========== */
+.cta-section {
+  padding: 80px 100px;
+  background: linear-gradient(135deg, #0d0d0f 0%, #1a1a1f 100%);
+  text-align: center;
+  border-top: 1px solid #2a2a2e;
+}
+
+.cta-section h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.cta-section p {
+  color: #b3b3b3;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-secondary {
+  background: transparent;
+  color: #b3b3b3;
+  border: 2px solid #2a2a2e;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-secondary:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+/* ========== Mobile Responsive ========== */
+@media (max-width: 768px) {
+  .overview-hero {
+    grid-template-columns: 1fr;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .overview-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .problem-section,
+  .features-section,
+  .tech-specs-section,
+  .workflow-section,
+  .cta-section {
+    padding: 60px 20px;
+  }
+
+  .hero-actions {
+    align-items: center;
+  }
+
+  .mode-buttons {
+    justify-content: center;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-secondary {
+    width: 250px;
+  }
+
+  .workflow-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .specs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .overview-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .problem-grid,
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    display: none;
+  }
+}

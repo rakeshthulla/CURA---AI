@@ -1,0 +1,142 @@
+.quickstart-container {
+  background-color: #0d0d0f;
+  color: #fff;
+  min-height: 100vh;
+  padding: 60px 100px;
+  font-family: "Inter", sans-serif;
+}
+
+.quickstart-header {
+  max-width: 800px;
+  margin-bottom: 50px;
+}
+
+h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+p {
+  color: #b3b3b3;
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.step-card {
+  background-color: #16161a;
+  border: 1px solid #2a2a2e;
+  border-radius: 15px;
+  padding: 35px 30px;
+  flex: 1;
+  min-width: 300px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.step-card:hover {
+  transform: translateY(-8px);
+  border-color: #3b82f6;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.step-number {
+  position: absolute;
+  top: -20px;
+  left: 30px;
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.step-card h2 {
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  margin-top: 10px;
+}
+
+.step-actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mode-btn {
+  padding: 10px 16px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #1a1a1f;
+  color: #b3b3b3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.mode-btn.doctor:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.mode-btn.patient:hover {
+  border-color: #9333ea;
+  color: #9333ea;
+}
+
+.action-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .quickstart-container {
+    padding: 40px 20px;
+  }
+
+  .steps {
+    flex-direction: column;
+  }
+
+  .step-card {
+    min-width: auto;
+  }
+
+  .step-actions {
+    flex-direction: column;
+  }
+
+  .mode-btn, .action-btn {
+    width: 100%;
+  }
+}
