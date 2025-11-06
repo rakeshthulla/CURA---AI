@@ -176,14 +176,19 @@ export const googleAuthCallback = async (req, res) => {
 // New: request password reset — generates token, saves to user, sends email
 export const forgotPassword = async (req, res) => {
   try {
+    console.log("🔵 forgotPassword called with body:", req.body);
+    
     const { email } = req.body || {};
     if (!email) return res.status(400).json({ message: "Email is required" });
 
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("⚠️ User not found for email:", email);
       // Don't reveal whether email exists — respond success for security
       return res.status(200).json({ message: "If that email exists, a reset link has been sent." });
     }
+
+    console.log("✅ User found:", user.email);
 
     const token = crypto.randomBytes(32).toString("hex");
     const expires = Date.now() + 3600 * 1000; // 1 hour
@@ -191,6 +196,18 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordToken = token;
     user.resetPasswordExpires = new Date(expires);
     await user.save();
+    
+    console.log("✅ Token saved to user. Token:", token);
+
+    // Log environment variables (masked)
+    console.log("📧 SMTP Config:", {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      secure: process.env.SMTP_SECURE,
+      user: process.env.SMTP_USER,
+      passLength: process.env.SMTP_PASS?.length || 0,
+      from: process.env.EMAIL_FROM
+    });
 
     // configure transporter
     const transporter = nodemailer.createTransport({
@@ -205,6 +222,8 @@ export const forgotPassword = async (req, res) => {
 
     const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:3000";
     const resetUrl = `${clientOrigin.replace(/\/$/, "")}/reset-password?token=${encodeURIComponent(token)}`;
+    
+    console.log("🔗 Reset URL:", resetUrl);
 
     const mailOptions = {
       from: process.env.EMAIL_FROM || `no-reply@${process.env.CLIENT_ORIGIN?.replace(/^https?:\/\//, "") || "cura.ai"}`,
@@ -214,18 +233,25 @@ export const forgotPassword = async (req, res) => {
       html: `<p>You requested a password reset. Click the link to reset your password (valid for 1 hour):</p><p><a href="${resetUrl}">${resetUrl}</a></p>`
     };
 
-    // ✅ Send email and log result properly
-    try {
-      const info = await transporter.sendMail(mailOptions);
-      console.log("✅ Password reset email sent:", info.response);
-    } catch (emailErr) {
-      console.error("❌ Failed to send reset email:", emailErr);
-      // Still return success to avoid revealing if email exists, but log the error
-    }
+    console.log("📨 Attempting to send email to:", user.email);
 
+    // ✅ Send email in background (non-blocking) — respond immediately
+    transporter.sendMail(mailOptions)
+      .then(info => {
+        console.log("✅ Password reset email sent successfully!");
+        console.log("📧 Info:", info.response);
+      })
+      .catch(emailErr => {
+        console.error("❌ FAILED to send reset email!");
+        console.error("Error code:", emailErr.code);
+        console.error("Error message:", emailErr.message);
+        console.error("Full error:", emailErr);
+      });
+
+    // ✅ Respond immediately without waiting for email
     return res.status(200).json({ message: "If that email exists, a reset link has been sent." });
   } catch (err) {
-    console.error("forgotPassword error:", err);
+    console.error("❌ forgotPassword error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 };
