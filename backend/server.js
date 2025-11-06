@@ -10,19 +10,24 @@ connectDB();
 const app = express();
 
 // allow frontend origin; adjust as needed
-const allowedOrigin = process.env.CLIENT_ORIGIN || "http://localhost:3000";
+// ✅ Allow frontend origin; adjust as needed
+const allowedOrigins = [
+  "https://cura-ai-topaz.vercel.app", // your Vercel frontend
+  "http://localhost:3000"             // local dev (optional)
+];
+
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // allow requests with no origin (e.g., mobile apps, curl)
-      if (!origin) return callback(null, true);
-      if (allowedOrigin === "*" || origin === allowedOrigin) return callback(null, true);
-      return callback(null, false);
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow requests like Postman
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: false,
+    credentials: true, // ✅ allow cookies/auth headers
   })
 );
+
 
 app.use(express.json());
 
