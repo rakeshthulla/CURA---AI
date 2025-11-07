@@ -199,6 +199,27 @@ export const forgotPassword = async (req, res) => {
     
     console.log("✅ Token saved to user. Token:", token);
 
+    // Log environment variables (masked)
+    console.log("📧 SMTP Config:", {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      secure: process.env.SMTP_SECURE,
+      user: process.env.SMTP_USER,
+      passLength: process.env.SMTP_PASS?.length || 0,
+      from: process.env.EMAIL_FROM
+    });
+
+    // configure transporter
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: process.env.SMTP_SECURE === "true", // true for 465
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
     const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:3000";
     const resetUrl = `${clientOrigin.replace(/\/$/, "")}/reset-password?token=${encodeURIComponent(token)}`;
     
@@ -216,19 +237,22 @@ export const forgotPassword = async (req, res) => {
         html: `<p>You requested a password reset. Click the link to reset your password (valid for 1 hour):</p><p><a href="${resetUrl}">${resetUrl}</a></p>`
       };
 
-      console.log("📨 Attempting to send email via SendGrid to:", user.email);
+    console.log("📨 Attempting to send email to:", user.email);
 
-      sgMail.send(msg)
-        .then(() => {
-          console.log("✅ Password reset email sent via SendGrid!");
-        })
-        .catch(emailErr => {
-          console.error("❌ SendGrid failed:", emailErr.response?.body || emailErr.message);
-        });
-    } else {
-      console.error("❌ SENDGRID_API_KEY not configured!");
-    }
+    // ✅ Send email in background (non-blocking) — respond immediately
+    transporter.sendMail(mailOptions)
+      .then(info => {
+        console.log("✅ Password reset email sent successfully!");
+        console.log("📧 Info:", info.response);
+      })
+      .catch(emailErr => {
+        console.error("❌ FAILED to send reset email!");
+        console.error("Error code:", emailErr.code);
+        console.error("Error message:", emailErr.message);
+        console.error("Full error:", emailErr);
+      });
 
+    // ✅ Respond immediately without waiting for email
     return res.status(200).json({ message: "If that email exists, a reset link has been sent." });
   } catch (err) {
     console.error("❌ forgotPassword error:", err);
