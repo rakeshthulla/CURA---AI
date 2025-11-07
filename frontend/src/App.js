@@ -11,6 +11,7 @@ import ForgotPassword from "./ForgotPassword";
 import PrivacySettings from "./PrivacySettings";
 import TermsOfUse from "./TermsOfUse";
 import HelpSupport from "./HelpSupport";
+import ResetPassword from "./ResetPassword";
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/privacy" element={<PrivacySettings />} />
         <Route path="/terms" element={<TermsOfUse />} />
         <Route path="/help" element={<HelpSupport />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         
       </Routes>
