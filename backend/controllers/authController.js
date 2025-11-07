@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import sgMail from "@sendgrid/mail";
+import nodemailer from "nodemailer"; // fallback only
 
 export const registerUser = async (req, res) => {
   try {
@@ -177,82 +178,66 @@ export const googleAuthCallback = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   try {
     console.log("🔵 forgotPassword called with body:", req.body);
-    
     const { email } = req.body || {};
     if (!email) return res.status(400).json({ message: "Email is required" });
 
     const user = await User.findOne({ email });
     if (!user) {
       console.log("⚠️ User not found for email:", email);
-      // Don't reveal whether email exists — respond success for security
       return res.status(200).json({ message: "If that email exists, a reset link has been sent." });
     }
 
     console.log("✅ User found:", user.email);
-
     const token = crypto.randomBytes(32).toString("hex");
-    const expires = Date.now() + 3600 * 1000; // 1 hour
-
     user.resetPasswordToken = token;
-    user.resetPasswordExpires = new Date(expires);
+    user.resetPasswordExpires = new Date(Date.now() + 3600 * 1000);
     await user.save();
-    
-    console.log("✅ Token saved to user. Token:", token);
-
-    // Log environment variables (masked)
-    console.log("📧 SMTP Config:", {
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_SECURE,
-      user: process.env.SMTP_USER,
-      passLength: process.env.SMTP_PASS?.length || 0,
-      from: process.env.EMAIL_FROM
-    });
-
-    // configure transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: process.env.SMTP_SECURE === "true", // true for 465
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    console.log("✅ Token saved:", token);
 
     const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:3000";
     const resetUrl = `${clientOrigin.replace(/\/$/, "")}/reset-password?token=${encodeURIComponent(token)}`;
-    
     console.log("🔗 Reset URL:", resetUrl);
 
-    // ✅ Use SendGrid instead of SMTP
+    const subject = "Cura AI — Password reset";
+    const text = `You requested a password reset. This link is valid for 1 hour:\n\n${resetUrl}`;
+    const html = `<p>You requested a password reset. This link is valid for 1 hour:</p><p><a href="${resetUrl}">${resetUrl}</a></p>`;
+
+    const fromAddress = process.env.EMAIL_FROM || "Cura AI <no-reply@curaai.local>";
+
     if (process.env.SENDGRID_API_KEY) {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      
-      const msg = {
-        to: user.email,
-        from: process.env.EMAIL_FROM || 'nrrrigesh@gmail.com',
-        subject: 'Cura AI — Password reset',
-        text: `You requested a password reset. Click the link to reset your password (valid for 1 hour):\n\n${resetUrl}`,
-        html: `<p>You requested a password reset. Click the link to reset your password (valid for 1 hour):</p><p><a href="${resetUrl}">${resetUrl}</a></p>`
-      };
+      // SendGrid path
+      try {
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const msg = { to: user.email, from: fromAddress, subject, text, html };
+        console.log("📨 Sending via SendGrid to:", user.email);
+        sgMail.send(msg)
+          .then(() => console.log("✅ SendGrid email sent"))
+          .catch(err => console.error("❌ SendGrid error:", err.response?.body || err.message));
+      } catch (sgErr) {
+        console.error("❌ SendGrid setup/send failed:", sgErr.message);
+      }
+    } else if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+      // Fallback SMTP
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT || 587),
+          secure: process.env.SMTP_SECURE === "true",
+          auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+        });
+        const mailOptions = { from: fromAddress, to: user.email, subject, text, html };
+        console.log("📨 Sending via SMTP to:", user.email);
+        transporter.sendMail(mailOptions)
+          .then(info => console.log("✅ SMTP email sent:", info.response))
+          .catch(err => console.error("❌ SMTP send error:", err.code, err.message));
+      } catch (smtpErr) {
+        console.error("❌ SMTP setup failed:", smtpErr.message);
+      }
+    } else {
+      console.error("❌ No email provider configured (SENDGRID_API_KEY or SMTP_* missing)");
+    }
 
-    console.log("📨 Attempting to send email to:", user.email);
-
-    // ✅ Send email in background (non-blocking) — respond immediately
-    transporter.sendMail(mailOptions)
-      .then(info => {
-        console.log("✅ Password reset email sent successfully!");
-        console.log("📧 Info:", info.response);
-      })
-      .catch(emailErr => {
-        console.error("❌ FAILED to send reset email!");
-        console.error("Error code:", emailErr.code);
-        console.error("Error message:", emailErr.message);
-        console.error("Full error:", emailErr);
-      });
-
-    // ✅ Respond immediately without waiting for email
+    // Immediate response (do not await email)
     return res.status(200).json({ message: "If that email exists, a reset link has been sent." });
   } catch (err) {
     console.error("❌ forgotPassword error:", err);
