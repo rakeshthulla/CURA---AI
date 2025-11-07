@@ -6,7 +6,7 @@ import nodemailer from "nodemailer"; // optional fallback if SendGrid unavailabl
 
 // Dynamic loader to avoid crashing when @sendgrid/mail is not installed
 let sgMailModule = null;
-async function getSendgrid() {
+async function loadSendGrid() {
   if (sgMailModule) return sgMailModule;
   try {
     const mod = await import("@sendgrid/mail");
@@ -214,24 +214,24 @@ export const forgotPassword = async (req, res) => {
 
     const from = process.env.EMAIL_FROM || "Cura AI <no-reply@curaai.local>";
     const subject = "Cura AI — Password reset";
-    const text = `You requested a password reset. Click the link to reset your password (valid for 1 hour):\n\n${resetUrl}`;
-    const html = `<p>You requested a password reset. Click the link to reset your password (valid for 1 hour):</p><p><a href="${resetUrl}">${resetUrl}</a></p>`;
+    const text = `You requested a password reset. Link valid 1 hour:\n\n${resetUrl}`;
+    const html = `<p>You requested a password reset. Link valid 1 hour:</p><p><a href="${resetUrl}">${resetUrl}</a></p>`;
 
     // Prefer SendGrid (works on Render where SMTP is blocked)
     if (process.env.SENDGRID_API_KEY) {
       (async () => {
-        const sgMail = await getSendgrid();
-        if (!sgMail) {
+        const sg = await loadSendGrid();
+        if (!sg) {
           console.error("❌ SENDGRID_API_KEY set but @sendgrid/mail not installed.");
           return;
         }
         try {
-          sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-          console.log("📨 Attempting to send email via SendGrid to:", user.email);
-          await sgMail.send({ to: user.email, from, subject, text, html });
-          console.log("✅ Password reset email sent via SendGrid!");
-        } catch (emailErr) {
-          console.error("❌ SendGrid failed:", emailErr.response?.body || emailErr.message);
+          sg.setApiKey(process.env.SENDGRID_API_KEY);
+          console.log("📨 SendGrid send →", user.email);
+          await sg.send({ to: user.email, from, subject, text, html });
+          console.log("✅ SendGrid email sent");
+        } catch (err) {
+          console.error("❌ SendGrid error:", err.response?.body || err.message);
         }
       })();
     } else if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
@@ -245,9 +245,9 @@ export const forgotPassword = async (req, res) => {
       transporter
         .sendMail({ from, to: user.email, subject, text, html })
         .then(info => console.log("✅ SMTP email sent:", info.response))
-        .catch(err => console.error("❌ SMTP send error:", err.code, err.message));
+        .catch(err => console.error("❌ SMTP error:", err.code, err.message));
     } else {
-      console.error("❌ No email provider configured (SENDGRID_API_KEY or SMTP_* missing).");
+      console.error("❌ No email provider configured.");
     }
 
     // Respond immediately (do not await email)
