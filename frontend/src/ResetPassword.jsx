@@ -18,7 +18,7 @@ const ResetPassword = () => {
     else setStatus({ error: "Invalid or missing reset token." });
   }, []);
 
-  const onSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!token) return;
     if (password.length < 6) return setStatus({ error: "Password must be at least 6 characters." });
@@ -53,7 +53,7 @@ const ResetPassword = () => {
           <h2>Reset Password</h2>
           {!token && <p className="error-message">Invalid reset link.</p>}
           {token && (
-            <form onSubmit={onSubmit} className="auth-form">
+            <form onSubmit={handleSubmit} className="auth-form">
               <input
                 type={showPw ? "text" : "password"}
                 placeholder="New password"
